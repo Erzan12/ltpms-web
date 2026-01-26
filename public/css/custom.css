@@ -1,0 +1,26 @@
+/* Smaller pagination buttons */
+.pagination-sm .page-link {
+  display: block;
+  position: relative;
+  width: 30px;              /* Adjust the width for smaller buttons */
+  height: 30px;             /* Adjust the height for smaller buttons */
+  line-height: 30px;        /* Adjust the line-height to center text vertically */
+  font-size: 12px;          /* Smaller font size */
+  text-align: center;
+  background-color: #f8f9fa;
+  color: #007bff;
+  border: 1px solid #007bff; /* Make the border a bit thinner */
+  border-radius: 4px;       /* Slightly rounded corners */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-sm .page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination-sm .page-link:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
