@@ -69,4 +69,16 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    /**
+     * Attached a toast message
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function registered($request, $user)
+    {
+        return redirect($this->redirectTo)
+            ->with('success', 'Registration successful! Welcome 🎉');
+    }
 }
