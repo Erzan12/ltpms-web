@@ -91,9 +91,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect('/livestocks');
+        return redirect('/login')->with('success', 'Registration successful! Please login 🎉');
     }
 
 
