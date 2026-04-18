@@ -148,17 +148,17 @@ class LivestockController extends Controller
         // $file = move(public_path('livestock_picture'), '');
 
         // Return success message and redirect to /livestocks
-        \DB::connection('mysql_backup')->table('livestocks')->insert([
-            'owner' => $validatedData['owner'],
-            'veterinarian' => $validatedData['veterinarian'],
-            'name' => $validatedData['name'],
-            'date_of_birth' => $validatedData['date_of_birth'],
-            'species' => $validatedData['species'],
-            'tag' => $tagNumber,
-            'picture' => $picturePath,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // \DB::connection('mysql_backup')->table('livestocks')->insert([
+        //     'owner' => $validatedData['owner'],
+        //     'veterinarian' => $validatedData['veterinarian'],
+        //     'name' => $validatedData['name'],
+        //     'date_of_birth' => $validatedData['date_of_birth'],
+        //     'species' => $validatedData['species'],
+        //     'tag' => $tagNumber,
+        //     'picture' => $picturePath,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
         return redirect()->route('livestocks.index')
                          ->with('success', 'Livestock record created successfully.');
     }
@@ -181,38 +181,38 @@ class LivestockController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    // Validate the request
-    $validatedData = $request->validate([
-        'owner' => 'required|string',
-        'veterinarian' => 'required|string',
-        'name' => 'required|string',
-        'date_of_birth' => 'required|date',
-        'species' => 'required|string',
-        'picture' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-    ]);
+    {
+        // Validate the request
+        $validatedData = $request->validate([
+            'owner' => 'required|string',
+            'veterinarian' => 'required|string',
+            'name' => 'required|string',
+            'date_of_birth' => 'required|date',
+            'species' => 'required|string',
+            'picture' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
 
-    // Find the livestock by ID
-    $livestock = Livestock::findOrFail($id);
+        // Find the livestock by ID
+        $livestock = Livestock::findOrFail($id);
 
-    // Update the livestock data in the original database
-    $livestock->update($validatedData);
+        // Update the livestock data in the original database
+        $livestock->update($validatedData);
 
-    // Handle picture update if a new picture is uploaded
-    if ($request->hasFile('picture')) {
-        $path = $request->file('picture')->store('livestock_pictures', 'public');
-        $livestock->update(['picture' => $path]);
-        $validatedData['picture'] = $path;
+        // Handle picture update if a new picture is uploaded
+        if ($request->hasFile('picture')) {
+            $path = $request->file('picture')->store('livestock_pictures', 'public');
+            $livestock->update(['picture' => $path]);
+            $validatedData['picture'] = $path;
+        }
+
+        // Update the livestock data in the backup database
+        // \DB::connection('mysql_backup')->table('livestocks')
+        //     ->where('id', $id)
+        //     ->update(array_merge($validatedData, ['updated_at' => now()]));
+
+        // Redirect with a success message
+        return redirect()->route('livestocks.index')->with('success', 'Livestock updated successfully in both databases!');
     }
-
-    // Update the livestock data in the backup database
-    \DB::connection('mysql_backup')->table('livestocks')
-        ->where('id', $id)
-        ->update(array_merge($validatedData, ['updated_at' => now()]));
-
-    // Redirect with a success message
-    return redirect()->route('livestocks.index')->with('success', 'Livestock updated successfully in both databases!');
-}
 
 
     public function destroy($id)

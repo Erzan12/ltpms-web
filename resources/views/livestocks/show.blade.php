@@ -43,7 +43,7 @@
         </div>
 
         <!-- QR CODE 
-        <a href="{{ route('livestock.generateQrCode', ['id'=> $livestock->id])}}" class="btn btn-secondary">
+        <a href="{{ route('livestock.qr', ['livestock'=> $livestock->id])}}" class="btn btn-secondary">
             Generate QR Code
         </a>
         -->
@@ -105,10 +105,10 @@
     </div>
 
     <div class="med-vac-rec">
-        <a href="{{ route('medical.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('medicals.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
             Add Medical Record
         </a>
-        <a href="{{ route('vaccination.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('vaccinations.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
             Add Vaccination Record
         </a>
     </div>
