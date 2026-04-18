@@ -117,6 +117,71 @@ Make sure to:
 
 ---
 
+## 🚀 Deployment & Maintenance
+This project uses Laravel and Docker. To ensure the application stays in sync with environment changes and database migrations, follow these command guidelines.
+
+---
+
+### 🧪 Local Development
+Run these commands in your local terminal during development to refresh your environment or apply database changes.
+| Task	                          |  Command                     |
+| Full Reset (The "Go-To" fix)    |  php artisan optimize:clear  |
+| Run Migrations	              |  php artisan migrate         |
+| Clear Config Cache	          |  php artisan config:clear    |
+| Clear App Cache	              |  php artisan cache:clear     |
+
+---
+
+### 🐳 Docker & Production Workflow
+In a containerized environment (like Render), commands are split between the Build Stage and the Runtime Stage.
+
+1. Build Stage (Dockerfile)
+These commands prepare the application during the image build. They do not require a database connection.
+```bash
+Dockerfile
+# Clear any stale defaults before packaging the image
+RUN php artisan config:clear && php artisan cache:clear
+```
+
+2. Runtime Stage (CMD)
+These commands run every time the container starts. This ensures the production database is always up to date and the configuration is optimized.
+```bash
+# Recommended startup sequence
+CMD php artisan optimize:clear && \
+    php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan serve --host=0.0.0.0 --port=10000
+```
+
+---
+
+## 🧠 Troubleshooting & Cache Management
+Laravel caches aggressively. If your .env changes aren't reflecting or the UI is acting "weird," use this guide:
+
+### The "Nuclear" Option
+If something isn't updating after a fresh deploy:
+```bash
+php artisan optimize:clear
+```
+This clears: Config, Route, View, and Application cache in one go.
+
+### Database Issues
+If you switch database providers (e.g., MySQL to PostgreSQL) or update connection strings:
+1. Clear config: php artisan config:clear
+2. Clear cache: php artisan cache:clear
+3. Run migrations: php artisan migrate --force
+
+### Production Optimization
+Once the app is stable, always rebuild the cache for a performance boost:
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+Note: Locally, you can run these commands manually. In production, these must be handled via your Docker CMD or entrypoint script because you do not have direct shell access to the running container.
+
+---
+
 ## 📄 License
 This project is for academic purposes.
  
