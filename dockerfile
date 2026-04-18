@@ -18,12 +18,11 @@ COPY . .
 # Install PHP deps
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel setup
-RUN cp .env.example .env
-RUN php artisan key:generate
+# Clear and rebuild config using Render env vars
+RUN php artisan config:clear && \
+    php artisan cache:clear
 
-# Cache config (optional but good)
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Start app + run migrations
+CMD php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan serve --host=0.0.0.0 --port=10000
