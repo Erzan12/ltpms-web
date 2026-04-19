@@ -20,7 +20,7 @@
         </div>
     @endif
 
-    <form action="{{ route('medical.store') }}" method="POST">
+    <form action="{{ route('medicals.store') }}" method="POST">
         @csrf
 
         <!-- Livestock ID (hidden field) -->

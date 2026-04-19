@@ -60,8 +60,13 @@ Route::get('/livestock/{livestock}/qr', [QrCodeController::class, 'generate'])
 | MEDICAL RECORDS (SEPARATE RESOURCE)
 |--------------------------------------------------------------------------
 */
+Route::get('/livestock/{livestock}/medical/create', [MedicalRecordController::class, 'create'])
+    ->name('livestock.medical.create');
 
-Route::resource('medicals', MedicalRecordController::class);
+Route::resource('medicals', MedicalRecordController::class)->except(['create']);
+
+Route::get('/livestock/{livestock}/medical/create', [MedicalRecordController::class, 'create'])
+    ->name('livestock.medical.create');
 
 /*
 |--------------------------------------------------------------------------
@@ -93,3 +98,4 @@ Route::get('/livestock/{livestock}/medical', [MedicalRecordController::class, 'i
 
 Route::get('/livestock/{livestock}/vaccination', [VaccinationController::class, 'index'])
     ->name('livestock.vaccination');
+    

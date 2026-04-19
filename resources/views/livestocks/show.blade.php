@@ -105,7 +105,7 @@
     </div>
 
     <div class="med-vac-rec">
-        <a href="{{ route('medicals.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('medicals.store', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
             Add Medical Record
         </a>
         <a href="{{ route('vaccinations.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
