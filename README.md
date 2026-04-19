@@ -171,6 +171,13 @@ If you switch database providers (e.g., MySQL to PostgreSQL) or update connectio
 2. Clear cache: php artisan cache:clear
 3. Run migrations: php artisan migrate --force
 
+### Local Dev Optimization/Clear Cache
+```bash
+php artisan config:clear
+php artisan route:clear
+php artisan view: clear
+```
+
 ### Production Optimization
 Once the app is stable, always rebuild the cache for a performance boost:
 ```bash
