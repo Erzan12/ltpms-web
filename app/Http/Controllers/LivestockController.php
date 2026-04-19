@@ -83,13 +83,13 @@ class LivestockController extends Controller
     }
 
     public function showdeleted()
-{
-    // Retrieve only soft-deleted records
-    $livestocks = Livestock::onlyTrashed()->get();
+    {
+        // Retrieve only soft-deleted records
+        $livestocks = Livestock::onlyTrashed()->get();
 
-    // Pass the data to the view
-    return view('livestocks.showdeleted', compact('livestocks'));
-}
+        // Pass the data to the view
+        return view('livestocks.showdeleted', compact('livestocks'));
+    }
 
     public function getLivestockByQrCode(Request $request)
     {
@@ -111,8 +111,6 @@ class LivestockController extends Controller
             ], 404);
         }
     }
-
-
 
     public function store(Request $request)
     {

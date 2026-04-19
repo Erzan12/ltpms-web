@@ -12,9 +12,12 @@ class MedicalRecordController extends Controller
 {
     public function create($livestockId)
     {
-        // Pass the livestock_id to the view
-        return view('medicals.create', ['livestock_id' => $livestockId]);
+        return view('medicals.create', [
+            'livestock' => $livestock,
+            'livestock_id' => $livestockId
+        ]);
     }
+
     public function index()
     {
         // Retrieve all medical records
@@ -22,9 +25,12 @@ class MedicalRecordController extends Controller
         
         // Retrieve all livestock records
         $livestocks = Livestock::all(); 
+
+        // Retrieve all vaccination records
+        $vaccinations = Vaccination::all();
         
         // Return both medical and livestock data to the view
-        return view('livestock', compact('medicals', 'livestocks'));
+        return view('livestock', compact('medicals', 'livestocks', 'vaccinations'));
     }
 
     public function records($id) {
@@ -42,68 +48,68 @@ class MedicalRecordController extends Controller
     }
 
     public function show($id)
-{
-    // Find the specific livestock
-    $livestock = Livestock::findOrFail($id);
+    {
+        // Find the specific livestock
+        $livestock = Livestock::findOrFail($id);
 
-    // Retrieve medical and vaccination records related to this livestock
-    $medicals = Medical::where('livestock_id', $id)->get();
-    $vaccinations = Vaccination::where('livestock_id', $id)->get();
+        // Retrieve medical and vaccination records related to this livestock
+        $medicals = Medical::where('livestock_id', $id)->get();
+        $vaccinations = Vaccination::where('livestock_id', $id)->get();
 
-    // Pass the data to the view
-    return view('livestocks.show', compact('livestock', 'medicals', 'vaccinations'));
-}
-public function store(Request $request, Medical $medicals)
-{
-    $validatedData = $request->validate([
-        'date' => 'required|string',
-        'treatment' => 'required|string',
-        'note' => 'required|string',
-        'livestock_id' => 'required|exists:livestocks,id',
-    ]);
-
-    $validatedData['user_id'] = auth()->user()->id;
-
-    // Save to the original database
-    $medical = Medical::create($validatedData);
-
-    // Ensure the livestock record exists in the backup database
-    $livestock = Livestock::findOrFail($validatedData['livestock_id']);
-    $backupLivestock = \DB::connection('mysql_backup')->table('livestocks')
-                        ->where('id', $livestock->id)
-                        ->first();
-
-    if (!$backupLivestock) {
-        // Insert the livestock record into the backup database if it doesn't exist
-        \DB::connection('mysql_backup')->table('livestocks')->insert([
-            'id' => $livestock->id,
-            'owner' => $livestock->owner,
-            'veterinarian' => $livestock->veterinarian,
-            'name' => $livestock->name,
-            'date_of_birth' => $livestock->date_of_birth,
-            'species' => $livestock->species,
-            'tag' => $livestock->tag,
-            'picture' => $livestock->picture,
-            'created_at' => $livestock->created_at,
-            'updated_at' => $livestock->updated_at,
-        ]);
+        // Pass the data to the view
+        return view('livestocks.show', compact('livestock', 'medicals', 'vaccinations'));
     }
 
-    // Now, insert the medical record into the backup database
-    \DB::connection('mysql_backup')->table('medicals')->insert([
-        'date' => $validatedData['date'],
-        'treatment' => $validatedData['treatment'],
-        'note' => $validatedData['note'],
-        'livestock_id' => $validatedData['livestock_id'],
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    public function store(Request $request, Medical $medicals)
+    {
+        $validatedData = $request->validate([
+            'date' => 'required|string',
+            'treatment' => 'required|string',
+            'note' => 'required|string',
+            'livestock_id' => 'required|exists:livestocks,id',
+        ]);
 
-    return redirect()->route('livestocks.show', ['livestock' => $request->livestock_id])
-                     ->with('success', 'Medical record added successfully.');
-}
+        $validatedData['user_id'] = auth()->user()->id;
 
-    
+        // Save to the original database
+        $medical = Medical::create($validatedData);
+
+        // Ensure the livestock record exists in the backup database
+        $livestock = Livestock::findOrFail($validatedData['livestock_id']);
+        $backupLivestock = \DB::connection('mysql_backup')->table('livestocks')
+                            ->where('id', $livestock->id)
+                            ->first();
+
+        if (!$backupLivestock) {
+            // Insert the livestock record into the backup database if it doesn't exist
+            \DB::connection('mysql_backup')->table('livestocks')->insert([
+                'id' => $livestock->id,
+                'owner' => $livestock->owner,
+                'veterinarian' => $livestock->veterinarian,
+                'name' => $livestock->name,
+                'date_of_birth' => $livestock->date_of_birth,
+                'species' => $livestock->species,
+                'tag' => $livestock->tag,
+                'picture' => $livestock->picture,
+                'created_at' => $livestock->created_at,
+                'updated_at' => $livestock->updated_at,
+            ]);
+        }
+
+        // Now, insert the medical record into the backup database
+        // \DB::connection('mysql_backup')->table('medicals')->insert([
+        //     'date' => $validatedData['date'],
+        //     'treatment' => $validatedData['treatment'],
+        //     'note' => $validatedData['note'],
+        //     'livestock_id' => $validatedData['livestock_id'],
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        return redirect()->route('livestocks.show', ['livestock' => $request->livestock_id])
+                        ->with('success', 'Medical record added successfully.');
+    }
+
     public function edit($id)
     {
         $medical = Medical::findOrFail($id);

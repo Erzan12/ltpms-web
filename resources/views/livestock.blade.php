@@ -101,7 +101,7 @@
                     <td>{{ $vaccination->vaccination }}</td>
                     <td>{{ $vaccination->booster }}</td>
                     <td>
-                        <form action="{{ route('vaccinations.update', $medical->id) }}" method="POST">
+                        <form action="{{ route('vaccinations.update', $vaccination->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-primary btn-sm">Update</button>
