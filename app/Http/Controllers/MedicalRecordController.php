@@ -156,39 +156,39 @@ class MedicalRecordController extends Controller
 
     //api
     public function apiStore(Request $request)
-{
-    $validatedData = $request->validate([
-        'date' => 'required|string',
-        'treatment' => 'required|string',
-        'note' => 'required|string',
-        'livestock_id' => 'required|exists:livestocks,id'
-    ]);
+    {
+        $validatedData = $request->validate([
+            'date' => 'required|string',
+            'treatment' => 'required|string',
+            'note' => 'required|string',
+            'livestock_id' => 'required|exists:livestocks,id'
+        ]);
 
-    $medical = Medical::create($validatedData);
+        $medical = Medical::create($validatedData);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Medical record added successfully.',
-        'data' => $medical
-    ], 201);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Medical record added successfully.',
+            'data' => $medical
+        ], 201);
+    }
 
-public function apiUpdate(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'date' => 'required|string',
-        'treatment' => 'required|string',
-        'note' => 'nullable|string'
-    ]);
+    public function apiUpdate(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'date' => 'required|string',
+            'treatment' => 'required|string',
+            'note' => 'nullable|string'
+        ]);
 
-    $medical = Medical::findOrFail($id);
-    $medical->update($validatedData);
+        $medical = Medical::findOrFail($id);
+        $medical->update($validatedData);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Medical record updated successfully.',
-        'data' => $medical
-    ], 200);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Medical record updated successfully.',
+            'data' => $medical
+        ], 200);
+    }
 
 }
