@@ -129,7 +129,7 @@ Run these commands in your local terminal during development to refresh your env
 | Run Migrations	              |  php artisan migrate         |
 | Clear Config Cache	          |  php artisan config:clear    |
 | Clear App Cache	              |  php artisan cache:clear     |
-
+| Check Available Routes          |  php artisan route:list      |
 ---
 
 ### 🐳 Docker & Production Workflow
