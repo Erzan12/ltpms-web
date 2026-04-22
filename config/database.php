@@ -62,20 +62,6 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-        'pgsql_back' => [
-            'driver' => 'mysql',
-            'host' => env('DB_BACKUP_HOST', '127.0.0.1'),
-            'port' => env('DB_BACKUP_PORT', '3306'),
-            'database' => env('DB_BACKUP_DATABASE', 'ltmps-web-backup'),
-            'username' => env('DB_BACKUP_USERNAME', 'root'),
-            'password' => env('DB_BACKUP_PASSWORD', ''),
-            'unix_socket' => env('DB_BACKUP_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
 
         'pgsql' => [
             'driver' => 'pgsql',
