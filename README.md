@@ -182,6 +182,117 @@ Note: Locally, you can run these commands manually. In production, these must be
 
 ---
 
+## IMAGE HANDLER! IMPORTANT FOR IMAGE DISPLAY
+
+When you run:
+```bash
+php artisan storage:link
+```
+
+Laravel creates a symbolic link (symlink):
+```bash
+public/storage → storage/app/public
+```
+
+---
+
+### 🧠 What that means in simple terms
+
+You now have:
+#### 📁 Real storage location (private)
+```bash
+storage/app/public/
+```
+
+#### 🌍 Public access point (browser)
+```bash
+public/storage/
+```
+But instead of copying files, Laravel just creates a shortcut link between them.
+
+---
+
+### 🔥 Why this is needed
+By default:
+❌ storage/app is NOT accessible in browser
+Laravel keeps it private for security.
+
+So if you store:
+```bash
+storage/app/public/livestock_pictures/image.png
+```
+👉 The browser cannot access it directly.
+
+---
+
+### ✅ The fix: the symlink
+After running:
+```bash
+php artisan storage:link
+```
+
+This becomes accessible:
+```bash
+public/storage/livestock_pictures/image.png
+```
+
+Now Laravel can serve it like:
+```bash
+<img src="{{ asset('storage/livestock_pictures/image.png') }}">
+```
+
+---
+
+### 🧭 How Laravel file flow works
+1. Upload
+```bash
+$request->file('picture')->store('livestock_pictures', 'public');
+```
+Saves to:
+```bash
+storage/app/public/livestock_pictures/
+```
+
+2. Database stores path
+```bash
+livestock_pictures/file.png
+```
+
+3. Browser request
+```bash
+/storage/livestock_pictures/file.png
+```
+
+4. Symlink resolves it
+```bash
+public/storage → storage/app/public
+```
+
+So file is served correctly.
+
+---
+
+## 🧪 What happens without it
+
+If you skip storage:link:
+
+❌ images show broken
+❌ 404 errors
+❌ file exists but not accessible
+
+---
+
+## 🔁 When you need to run it again
+
+You only need to rerun if:
+
+- you deleted public/storage
+- you cloned the project
+- you deployed to a new server
+- symlink got broken
+
+---
+
 ## 📄 License
 This project is for academic purposes.
  
@@ -200,3 +311,5 @@ Go to your terminal type php -m and look for imagick
 Done.
 
 link imagick: https://pecl.php.net/
+
+---
