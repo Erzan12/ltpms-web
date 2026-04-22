@@ -66,6 +66,12 @@ php artisan key:generate
 ---
 
 ### 5. Run Database Migrations
+Migrate original database
+```bash
+php artisan migrate
+```
+Migrate backup database
+```bash
 ```bash
 php artisan migrate
 ```
