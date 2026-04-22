@@ -32,6 +32,7 @@
                 <input type="text" class="form-control" value="{{ $livestock->tag }}" readonly>
             </div>
         </div>
+
         <div class="col-md-6 d-flex justify-content-center align-items-center">
             @if($livestock->picture)
                 <img src="{{ asset('storage/' . $livestock->picture) }}" alt="Livestock Picture" class="img-fluid" style="max-width: 100%; height: auto;">
@@ -85,7 +86,7 @@
                         const livestockId = button.getAttribute('data-id'); // Extract info from data-* attributes
 
                         // AJAX request to generate the qrcode
-                        fetch(`/livestock/${livestockId}/generate-qr-code`)
+                        fetch(`/livestock/${livestockId}/qr`)
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
@@ -105,7 +106,7 @@
     </div>
 
     <div class="med-vac-rec">
-        <a href="{{ route('medicals.store', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('livestock.medical.create', ['livestock' => $livestock->id]) }}" class="btn btn-primary">
             Add Medical Record
         </a>
         <a href="{{ route('vaccinations.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
