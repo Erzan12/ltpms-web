@@ -72,8 +72,7 @@ php artisan migrate
 ```
 Migrate backup database
 ```bash
-```bash
-php artisan migrate
+php artisan migrate --database=pgsql_backup
 ```
 
 ---
