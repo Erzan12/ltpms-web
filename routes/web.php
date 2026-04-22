@@ -65,16 +65,15 @@ Route::get('/livestock/{livestock}/medical/create', [MedicalRecordController::cl
 
 Route::resource('medicals', MedicalRecordController::class)->except(['create']);
 
-Route::get('/livestock/{livestock}/medical/create', [MedicalRecordController::class, 'create'])
-    ->name('livestock.medical.create');
-
 /*
 |--------------------------------------------------------------------------
 | VACCINATIONS (SEPARATE RESOURCE)
 |--------------------------------------------------------------------------
 */
+Route::get('/livestock/{livestock}/vaccination/create', [VaccinationController::class, 'create'])
+    ->name('livestock.vaccination.create');
 
-Route::resource('vaccinations', VaccinationController::class);
+Route::resource('vaccinations', VaccinationController::class)->except(['create']);
 
 /*
 |--------------------------------------------------------------------------
