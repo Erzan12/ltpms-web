@@ -78,13 +78,13 @@ public function store(Request $request, Vaccination $vaccinations)
 
     // Ensure the livestock record exists in the backup database
     $livestock = Livestock::findOrFail($validatedData['livestock_id']);
-    $backupLivestock = \DB::connection('mysql_backup')->table('livestocks')
+    $backupLivestock = \DB::connection('pgsql_back')->table('livestocks')
                         ->where('id', $livestock->id)
                         ->first();
 
     if (!$backupLivestock) {
         // Insert the livestock record into the backup database if it doesn't exist
-        \DB::connection('mysql_backup')->table('livestocks')->insert([
+        \DB::connection('pgsql_back')->table('livestocks')->insert([
             'id' => $livestock->id,
             'owner' => $livestock->owner,
             'veterinarian' => $livestock->veterinarian,
@@ -99,7 +99,7 @@ public function store(Request $request, Vaccination $vaccinations)
     }
 
     // Now, insert the vaccination record into the backup database
-    \DB::connection('mysql_backup')->table('vaccinations')->insert([
+    \DB::connection('pgsql_back')->table('vaccinations')->insert([
         'date' => $validatedData['date'],
         'vaccination' => $validatedData['vaccination'],
         'booster' => $validatedData['booster'],

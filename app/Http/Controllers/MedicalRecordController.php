@@ -12,6 +12,8 @@ class MedicalRecordController extends Controller
 {
     public function create($livestockId)
     {
+        $livestock = Livestock::findOrFail($livestockId);
+
         return view('medicals.create', [
             'livestock' => $livestock,
             'livestock_id' => $livestockId
@@ -72,17 +74,17 @@ class MedicalRecordController extends Controller
         $validatedData['user_id'] = auth()->user()->id;
 
         // Save to the original database
-        $medical = Medical::create($validatedData);
+        $medicals = Medical::create($validatedData);
 
         // Ensure the livestock record exists in the backup database
         $livestock = Livestock::findOrFail($validatedData['livestock_id']);
-        $backupLivestock = \DB::connection('mysql_backup')->table('livestocks')
+        $backupLivestock = \DB::connection('pgsql_backup')->table('livestocks')
                             ->where('id', $livestock->id)
                             ->first();
 
         if (!$backupLivestock) {
             // Insert the livestock record into the backup database if it doesn't exist
-            \DB::connection('mysql_backup')->table('livestocks')->insert([
+            \DB::connection('pgsql_backup')->table('livestocks')->insert([
                 'id' => $livestock->id,
                 'owner' => $livestock->owner,
                 'veterinarian' => $livestock->veterinarian,
@@ -97,14 +99,15 @@ class MedicalRecordController extends Controller
         }
 
         // Now, insert the medical record into the backup database
-        // \DB::connection('mysql_backup')->table('medicals')->insert([
-        //     'date' => $validatedData['date'],
-        //     'treatment' => $validatedData['treatment'],
-        //     'note' => $validatedData['note'],
-        //     'livestock_id' => $validatedData['livestock_id'],
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        \DB::connection('pgsql_backup')->table('medicals')->insert([
+            'date'         => $validatedData['date'],
+            'treatment'    => $validatedData['treatment'],
+            'note'         => $validatedData['note'],
+            'livestock_id' => $validatedData['livestock_id'],
+            'user_id'      => $validatedData['user_id'],
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
 
         return redirect()->route('livestocks.show', ['livestock' => $request->livestock_id])
                         ->with('success', 'Medical record added successfully.');
@@ -135,7 +138,7 @@ class MedicalRecordController extends Controller
         $medical->update($validatedData);
 
         //Update in the backup database
-        \DB::connection('mysql_backup')->table('medicals')
+        \DB::connection('pgsql_back')->table('medicals')
             ->where('id', $id)
             ->update(array_merge($validatedData, ['updated_at' => now()]));
 

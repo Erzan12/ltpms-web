@@ -143,20 +143,18 @@ class LivestockController extends Controller
             'picture' => $picturePath,
         ]);
 
-        // $file = move(public_path('livestock_picture'), '');
-
         // Return success message and redirect to /livestocks
-        // \DB::connection('mysql_backup')->table('livestocks')->insert([
-        //     'owner' => $validatedData['owner'],
-        //     'veterinarian' => $validatedData['veterinarian'],
-        //     'name' => $validatedData['name'],
-        //     'date_of_birth' => $validatedData['date_of_birth'],
-        //     'species' => $validatedData['species'],
-        //     'tag' => $tagNumber,
-        //     'picture' => $picturePath,
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        \DB::connection('pgsql_back')->table('livestocks')->insert([
+            'owner' => $validatedData['owner'],
+            'veterinarian' => $validatedData['veterinarian'],
+            'name' => $validatedData['name'],
+            'date_of_birth' => $validatedData['date_of_birth'],
+            'species' => $validatedData['species'],
+            'tag' => $tagNumber,
+            'picture' => $picturePath,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         return redirect()->route('livestocks.index')
                          ->with('success', 'Livestock record created successfully.');
     }
@@ -204,7 +202,7 @@ class LivestockController extends Controller
         }
 
         // Update the livestock data in the backup database
-        // \DB::connection('mysql_backup')->table('livestocks')
+        // \DB::connection('pgsql_back')->table('livestocks')
         //     ->where('id', $id)
         //     ->update(array_merge($validatedData, ['updated_at' => now()]));
 
