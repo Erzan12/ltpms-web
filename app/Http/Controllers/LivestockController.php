@@ -143,18 +143,18 @@ class LivestockController extends Controller
             'picture' => $picturePath,
         ]);
 
-        // Return success message and redirect to /livestocks
-        \DB::connection('pgsql_back')->table('livestocks')->insert([
-            'owner' => $validatedData['owner'],
-            'veterinarian' => $validatedData['veterinarian'],
-            'name' => $validatedData['name'],
-            'date_of_birth' => $validatedData['date_of_birth'],
-            'species' => $validatedData['species'],
-            'tag' => $tagNumber,
-            'picture' => $picturePath,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // // Return success message and redirect to /livestocks
+        // \DB::connection('pgsql_back')->table('livestocks')->insert([
+        //     'owner' => $validatedData['owner'],
+        //     'veterinarian' => $validatedData['veterinarian'],
+        //     'name' => $validatedData['name'],
+        //     'date_of_birth' => $validatedData['date_of_birth'],
+        //     'species' => $validatedData['species'],
+        //     'tag' => $tagNumber,
+        //     'picture' => $picturePath,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
         return redirect()->route('livestocks.index')
                          ->with('success', 'Livestock record created successfully.');
     }

@@ -79,36 +79,36 @@ class VaccinationController extends Controller
 
         // Ensure the livestock record exists in the backup database
         $livestock = Livestock::findOrFail($validatedData['livestock_id']);
-        $backupLivestock = \DB::connection('pgsql_backup')->table('livestocks')
-                            ->where('id', $livestock->id)
-                            ->first();
+        // $backupLivestock = \DB::connection('pgsql_backup')->table('livestocks')
+        //                     ->where('id', $livestock->id)
+        //                     ->first();
 
-        if (!$backupLivestock) {
-            // Insert the livestock record into the backup database if it doesn't exist
-            \DB::connection('pgsql_backup')->table('livestocks')->insert([
-                'id' => $livestock->id,
-                'owner' => $livestock->owner,
-                'veterinarian' => $livestock->veterinarian,
-                'name' => $livestock->name,
-                'date_of_birth' => $livestock->date_of_birth,
-                'species' => $livestock->species,
-                'tag' => $livestock->tag,
-                'picture' => $livestock->picture,
-                'created_at' => $livestock->created_at,
-                'updated_at' => $livestock->updated_at,
-            ]);
-        }
+        // if (!$backupLivestock) {
+        //     // Insert the livestock record into the backup database if it doesn't exist
+        //     \DB::connection('pgsql_backup')->table('livestocks')->insert([
+        //         'id' => $livestock->id,
+        //         'owner' => $livestock->owner,
+        //         'veterinarian' => $livestock->veterinarian,
+        //         'name' => $livestock->name,
+        //         'date_of_birth' => $livestock->date_of_birth,
+        //         'species' => $livestock->species,
+        //         'tag' => $livestock->tag,
+        //         'picture' => $livestock->picture,
+        //         'created_at' => $livestock->created_at,
+        //         'updated_at' => $livestock->updated_at,
+        //     ]);
+        // }
 
-        // Now, insert the vaccination record into the backup database
-        \DB::connection('pgsql_backup')->table('vaccinations')->insert([
-            'date'         => $validatedData['date'],
-            'vaccination'  => $validatedData['vaccination'],
-            'booster'      => $validatedData['booster'],
-            'livestock_id' => $validatedData['livestock_id'],
-            'user_id'      => $validatedData['user_id'],
-            'created_at'   => now(),
-            'updated_at'   => now(),
-        ]);
+        // // Now, insert the vaccination record into the backup database
+        // \DB::connection('pgsql_backup')->table('vaccinations')->insert([
+        //     'date'         => $validatedData['date'],
+        //     'vaccination'  => $validatedData['vaccination'],
+        //     'booster'      => $validatedData['booster'],
+        //     'livestock_id' => $validatedData['livestock_id'],
+        //     'user_id'      => $validatedData['user_id'],
+        //     'created_at'   => now(),
+        //     'updated_at'   => now(),
+        // ]);
 
         return redirect()->route('livestocks.show', ['livestock' => $request->livestock_id])
                         ->with('success', 'Vaccination record added successfully.');
