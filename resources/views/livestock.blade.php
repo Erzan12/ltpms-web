@@ -68,7 +68,7 @@
                     <td>{{ $medical->note }}</td>
                     <td>
                     
-                            <a href="{{ route('medicals.edit', $livestock->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ route('medicals.edit', $livestock->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
                         <form action="{{ route('medicals.destroy', $medical->id) }}" method="POST" style="display:inline;">
                             @csrf
@@ -101,11 +101,12 @@
                     <td>{{ $vaccination->vaccination }}</td>
                     <td>{{ $vaccination->booster }}</td>
                     <td>
-                        <form action="{{ route('vaccinations.update', $vaccination->id) }}" method="POST">
+                        {{-- <form action="{{ route('vaccinations.update', $vaccination->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                        </form>
+                        </form> --}}
+                        <a href="{{ route('vaccinations.edit', $livestock->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('vaccinations.destroy', $vaccination->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')

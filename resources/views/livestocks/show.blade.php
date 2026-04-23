@@ -32,6 +32,7 @@
                 <input type="text" class="form-control" value="{{ $livestock->tag }}" readonly>
             </div>
         </div>
+
         <div class="col-md-6 d-flex justify-content-center align-items-center">
             @if($livestock->picture)
                 <img src="{{ asset('storage/' . $livestock->picture) }}" alt="Livestock Picture" class="img-fluid" style="max-width: 100%; height: auto;">
@@ -48,7 +49,7 @@
         </a>
         -->
         <div>
-                <!-- Generate qrcode button -->
+            <!-- Generate qrcode button -->
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#qrCodeModal" data-id="{{ $livestock->id }}">
                 Generate QR Code
             </button>
@@ -85,12 +86,12 @@
                         const livestockId = button.getAttribute('data-id'); // Extract info from data-* attributes
 
                         // AJAX request to generate the qrcode
-                        fetch(`/livestock/${livestockId}/generate-qr-code`)
+                        fetch(`/livestock/${livestockId}/qr`)
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
                                     // Load the qrcode image into the modal
-                                    document.getElementById('qrCodeImageContainer').innerHTML = `<img src="${data.qrCodeUrl}" alt="QR Code" class="img-fluid">`;
+                                    document.getElementById('qrCodeImageContainer').innerHTML = `<img src="${data.qrCode}" alt="QR Code" class="img-fluid">`;
                                 } else {
                                     document.getElementById('qrCodeImageContainer').innerHTML = '<p>Error generating QR Code.</p>';
                                 }
@@ -105,10 +106,10 @@
     </div>
 
     <div class="med-vac-rec">
-        <a href="{{ route('medicals.store', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('livestock.medical.create', ['livestock' => $livestock->id]) }}" class="btn btn-primary">
             Add Medical Record
         </a>
-        <a href="{{ route('vaccinations.create', ['livestockId' => $livestock->id]) }}" class="btn btn-primary">
+        <a href="{{ route('livestock.vaccination.create', ['livestock' => $livestock->id]) }}" class="btn btn-primary">
             Add Vaccination Record
         </a>
     </div>
