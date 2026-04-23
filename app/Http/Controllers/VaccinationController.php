@@ -124,7 +124,6 @@ class VaccinationController extends Controller
     public function update(Request $request, Vaccination $vaccination)
     {    
         $validatedData = $request->validate([
-            'id' => 'required|string',
             'date' => 'required|date',
             'vaccination' => 'required|string',
             'booster' => 'nullable|string',
@@ -134,10 +133,7 @@ class VaccinationController extends Controller
         $vaccination = Vaccination::findOrFail($id);
 
         // Update vaccination record fields
-        $vaccination->date = $validatedData['date'];
-        $vaccination->vaccination = $validatedData['vaccination'];
-        $vaccination->booster = $validatedData['booster'];
-        $vaccination->updated_at = now()->format('Y-m-d H:i:s');
+        $vaccination->update($validatedData);;
 
         $vaccination->save();
 
@@ -146,9 +142,9 @@ class VaccinationController extends Controller
                         ->with('success', 'vaccination record updated successfully.');
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $vaccination_row = Vaccination::findOrFail($request->id);
+        $vaccination_row = Vaccination::findOrFail($id);
         $livestockId = $vaccination_row->livestock_id; 
         $vaccination_row->delete();
 

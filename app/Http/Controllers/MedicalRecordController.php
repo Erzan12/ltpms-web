@@ -123,7 +123,6 @@ class MedicalRecordController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'required',
             'date' => 'required|string',
             'treatment' => 'required|string',
             'note' => 'nullable|string',
@@ -138,18 +137,18 @@ class MedicalRecordController extends Controller
         $medical->update($validatedData);
 
         //Update in the backup database
-        \DB::connection('pgsql_back')->table('medicals')
-            ->where('id', $id)
-            ->update(array_merge($validatedData, ['updated_at' => now()]));
+        // \DB::connection('pgsql_backup')->table('medicals')
+        //     ->where('id', $id)
+        //     ->update(array_merge($validatedData, ['updated_at' => now()]));
 
         return redirect()->route('livestocks.show', ['livestock' => $livestockId])
                          ->with('success', 'Medical record updated successfully.');
     }
 
 
-    public function destroy(Request $request, Medical $medical)
+    public function destroy($id)
     {           
-        $medical = $medical::findOrFail($request->id); 
+        $medical = Medical::findOrFail($id); 
         $livestockId = $medical->livestock_id;
         $medical->delete();
         
