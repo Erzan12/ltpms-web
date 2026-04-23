@@ -66,8 +66,13 @@ php artisan key:generate
 ---
 
 ### 5. Run Database Migrations
+Migrate original database
 ```bash
 php artisan migrate
+```
+Migrate backup database
+```bash
+php artisan migrate --database=pgsql_backup
 ```
 
 ---
@@ -129,7 +134,7 @@ Run these commands in your local terminal during development to refresh your env
 | Run Migrations	              |  php artisan migrate         |
 | Clear Config Cache	          |  php artisan config:clear    |
 | Clear App Cache	              |  php artisan cache:clear     |
-
+| Check Available Routes          |  php artisan route:list      |
 ---
 
 ### 🐳 Docker & Production Workflow
@@ -171,6 +176,13 @@ If you switch database providers (e.g., MySQL to PostgreSQL) or update connectio
 2. Clear cache: php artisan cache:clear
 3. Run migrations: php artisan migrate --force
 
+### Local Dev Optimization/Clear Cache
+```bash
+php artisan config:clear
+php artisan route:clear
+php artisan view: clear
+```
+
 ### Production Optimization
 Once the app is stable, always rebuild the cache for a performance boost:
 ```bash
@@ -179,117 +191,6 @@ php artisan route:cache
 php artisan view:cache
 ```
 Note: Locally, you can run these commands manually. In production, these must be handled via your Docker CMD or entrypoint script because you do not have direct shell access to the running container.
-
----
-
-## IMAGE HANDLER! IMPORTANT FOR IMAGE DISPLAY
-
-When you run:
-```bash
-php artisan storage:link
-```
-
-Laravel creates a symbolic link (symlink):
-```bash
-public/storage → storage/app/public
-```
-
----
-
-### 🧠 What that means in simple terms
-
-You now have:
-#### 📁 Real storage location (private)
-```bash
-storage/app/public/
-```
-
-#### 🌍 Public access point (browser)
-```bash
-public/storage/
-```
-But instead of copying files, Laravel just creates a shortcut link between them.
-
----
-
-### 🔥 Why this is needed
-By default:
-❌ storage/app is NOT accessible in browser
-Laravel keeps it private for security.
-
-So if you store:
-```bash
-storage/app/public/livestock_pictures/image.png
-```
-👉 The browser cannot access it directly.
-
----
-
-### ✅ The fix: the symlink
-After running:
-```bash
-php artisan storage:link
-```
-
-This becomes accessible:
-```bash
-public/storage/livestock_pictures/image.png
-```
-
-Now Laravel can serve it like:
-```bash
-<img src="{{ asset('storage/livestock_pictures/image.png') }}">
-```
-
----
-
-### 🧭 How Laravel file flow works
-1. Upload
-```bash
-$request->file('picture')->store('livestock_pictures', 'public');
-```
-Saves to:
-```bash
-storage/app/public/livestock_pictures/
-```
-
-2. Database stores path
-```bash
-livestock_pictures/file.png
-```
-
-3. Browser request
-```bash
-/storage/livestock_pictures/file.png
-```
-
-4. Symlink resolves it
-```bash
-public/storage → storage/app/public
-```
-
-So file is served correctly.
-
----
-
-## 🧪 What happens without it
-
-If you skip storage:link:
-
-❌ images show broken
-❌ 404 errors
-❌ file exists but not accessible
-
----
-
-## 🔁 When you need to run it again
-
-You only need to rerun if:
-
-- you deleted public/storage
-- you cloned the project
-- you deployed to a new server
-- symlink got broken
 
 ---
 
@@ -311,5 +212,3 @@ Go to your terminal type php -m and look for imagick
 Done.
 
 link imagick: https://pecl.php.net/
-
----
