@@ -132,11 +132,11 @@
                     <td>{{ $medical->date }}</td>
                     <td>{{ $medical->treatment }}</td>
                     <td>{{ $medical->note }}</td>
-                    {{-- <td>
+                    <td>
                         <a href="{{ route('medicals.edit', $medical->id) }}" class="btn btn-warning btn-sm text-white">Edit</a>
                         <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#delete-{{$medical->id}}">delete</button>
                         
-                    </td> --}}
+                    </td>
                 </tr>
                 {{-- modal delete confirmation --}}
                 <div class="modal fade" id="delete-{{$medical->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -185,12 +185,12 @@
                     <td>{{ $vaccination->date }}</td>
                     <td>{{ $vaccination->vaccination }}</td>
                     <td>{{ $vaccination->booster }}</td>
-                    {{-- <td>
+                    <td>
                         <a href="{{ route('vaccinations.edit', $vaccination->id) }}" class="btn btn-warning btn-sm text-white">Edit</a>
                         
                         <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#delete-{{$vaccination->id}}" data-bs->Delete</button>
                         
-                    </td> --}}
+                    </td>
                 </tr>
                 {{-- modal delete confirmation --}}
                 <div class="modal fade" id="delete-{{$vaccination->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
