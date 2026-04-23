@@ -117,22 +117,28 @@
     <!-- Medical Records Table -->
     <h3>Medical Records</h3>
     <div class="table-responsive mb-4">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-fixed">
+            <colgroup>
+                <col style="width: 15%;">
+                <col style="width: 35%;">
+                <col style="width: 30%;">
+                <col style="width: 20%;">
+            </colgroup>
             <thead class="table-light">
                 <tr>
-                    <th>Date</th>
-                    <th>Treatment</th>
-                    <th>Notes</th>
-                    {{-- <th>Action</th> --}}
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Treatment</th>
+                    <th class="text-center">Notes</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($medicals as $medical)
                 <tr>
-                    <td>{{ $medical->date }}</td>
-                    <td>{{ $medical->treatment }}</td>
-                    <td>{{ $medical->note }}</td>
-                    <td>
+                    <td class="text-center">{{ $medical->date }}</td>
+                    <td class="text-center">{{ $medical->treatment }}</td>
+                    <td class="text-center">{{ $medical->note }}</td>
+                    <td class="text-center">
                         <a href="{{ route('medicals.edit', $medical->id) }}" class="btn btn-warning btn-sm text-white">Edit</a>
                         <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#delete-{{$medical->id}}">delete</button>
                         
@@ -170,26 +176,34 @@
     <!-- Vaccination Records Table -->
     <h3>Vaccination Records</h3>
     <div class="table-responsive mb-4">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-fixed">
+            <colgroup>
+                <col style="width: 15%;">
+                <col style="width: 35%;">
+                <col style="width: 30%;">
+                <col style="width: 20%;">
+            </colgroup>
             <thead class="table-light">
                 <tr>
-                    <th>Date</th>
-                    <th>Vaccination</th>
-                    <th>Booster</th>
-                    {{-- <th>Action</th> --}}
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Vaccination</th>
+                    <th class="text-center">Booster</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($vaccinations as $vaccination)
                 <tr>
-                    <td>{{ $vaccination->date }}</td>
-                    <td>{{ $vaccination->vaccination }}</td>
-                    <td>{{ $vaccination->booster }}</td>
-                    <td>
+                    <td class="text-center">{{ $vaccination->date }}</td>
+                    <td class="text-center">{{ $vaccination->vaccination }}</td>
+                    <td class="text-center">{{ $vaccination->booster }}</td>
+                    <td class="text-center">
                         <a href="{{ route('vaccinations.edit', $vaccination->id) }}" class="btn btn-warning btn-sm text-white">Edit</a>
-                        
-                        <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#delete-{{$vaccination->id}}" data-bs->Delete</button>
-                        
+                        <button class="btn btn-danger btn-sm" type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#delete-{{$vaccination->id}}">
+                            Delete
+                        </button>  
                     </td>
                 </tr>
                 {{-- modal delete confirmation --}}
