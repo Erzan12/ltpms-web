@@ -49,7 +49,7 @@
         </a>
         -->
         <div>
-                <!-- Generate qrcode button -->
+            <!-- Generate qrcode button -->
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#qrCodeModal" data-id="{{ $livestock->id }}">
                 Generate QR Code
             </button>
@@ -91,7 +91,7 @@
                             .then(data => {
                                 if (data.success) {
                                     // Load the qrcode image into the modal
-                                    document.getElementById('qrCodeImageContainer').innerHTML = `<img src="${data.qrCodeUrl}" alt="QR Code" class="img-fluid">`;
+                                    document.getElementById('qrCodeImageContainer').innerHTML = `<img src="${data.qrCode}" alt="QR Code" class="img-fluid">`;
                                 } else {
                                     document.getElementById('qrCodeImageContainer').innerHTML = '<p>Error generating QR Code.</p>';
                                 }
