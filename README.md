@@ -1,7 +1,7 @@
 # 🐄 Livestock Tagging and Profiling Management System (LTPMS)
 
 ## 📌 Project Overview
-The **Livestock Tagging and Profiling Management System Using Wireless Technology** is a web-based application built with Laravel.
+The **Livestock Tagging and Profiling Management System Using Wireless Technology** is one of my Freelance Laravel projects a web-based application built with Laravel.
 
 It helps streamline livestock management by providing a **paperless, efficient, and accurate system** for tracking animal records.
 
